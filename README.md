@@ -145,6 +145,62 @@ function* myGen(){ yield 1; }
 5. Assigned properties and methods
 - Callback functions are functions that other code will later “call back,” and are often used, especially with event handling.
 
+## Chapter 4. Functions for the journeyman: understanding function invocation
+- The implicit function parameters `this` and `arguments`. These are silently passed to functions and can be accessed just like any other explicitly named function parameter within the function’s body.
+1. The `this` parameter represents the function context, the object on which our function is invoked.
+2. The `arguments` parameter represents all arguments that are passed in through a function call.
+
+- The main point of the arguments object is to allow us to access all arguments that were passed to the function, regardless of whether a particular argument is associated with a function parameter.
+- The rest parameter is a real array, which means that we can use all our favorite array methods on it. This gives it a certain advantage over the arguments object.
+- The concept of aliasing function parameters through the `arguments` object can be confusing, so JavaScript provides a way to opt out of it by using *strict mode*.
+- One of the things that strict mode changes is that it disables `arguments` aliasing.
+
+We can invoke a function in four ways:
+1. As a function—skulk(), in which the function is invoked in a straightforward manner
+2. As a method—ninja.skulk(), which ties the invocation to an object, enabling object-oriented programming
+3. As a constructor—new Ninja(), in which a new object is brought into being
+4. Via the function’s apply or call methods—skulk.call(ninja)or skulk.apply(ninja)
+
+**Invocation as a function**
+- The function context (the value of the `this` keyword) can be two things:
+1. In nonstrict mode, it will be the global context (the window object).
+2. In strict mode, it will be undefined.
+
+**Invocation as a method**
+- When a function is assigned to a property of an object and the invocation occurs by referencing the function using that property, then the function is invoked as a method of that object.
+- When we invoke a function as a method of an object, that object becomes the function context and is available within the function via the this parameter.
+- Invoking functions as methods is crucial to writing JavaScript in an object-oriented manner. Doing so enables you to use `this` within any method to reference the method’s “owning” object—a fundamental concept in object-oriented programming.
+
+**Invocation as a constructor**
+- There’s nothing special about a function that’s going to be used as a constructor.
+- Constructor functions are declared just like any other functions, and we can easily use function declarations and function expressions for constructing new objects.
+- A *function constructor* enables us to create functions from dynamically created strings.
+- *Constructor functions* are functions that we use to create and initialize object instances.
+- When invoked with the keyword `new`, an empty object instance is created and passed to the function as its function context, the `this` parameter.
+- If the constructor returns an object, that object is returned as the value of the whole new expression, and the newly constructed object passed as `this` to the constructor is discarded.
+- If, however, a nonobject is returned from the constructor, the returned value is ignored, and the newly created object is returned.
+- Functions and methods are generally named starting with a verb that describes what they do (skulk, creep, sneak, doSomethingWonderful, and so on) and start with a lowercase letter.
+- Constructors, on the other hand, are usually named as a noun that describes the object that’s being constructed and start with an uppercase character: Ninja, Samurai, Emperor, Ronin.
+
+**Invocation with the apply and call methods**
+- JavaScript provides a means for us to invoke a function and to explicitly specify any object we want as the function context.
+- We do this through the use of one of two methods that exist for every function: `apply` and `call`.
+- In the case of `apply`, we use an array of arguments, and in the case of `call`, we list them as call arguments, after the function context
+- To facilitate a more functional style, all array objects have access to a `forEach` function that invokes a callback on each element within an array. This is often more succinct, and this style is preferred over the traditional `for` statement by those familiar with functional programming.
+
+**Using arrow functions to get around function contexts**
+- Arrow functions don’t have their own `this` value. Instead, they remember the value of the this parameter at the time of their definition.
+
+**Using the bind method**
+- Every function has access to the `bind` method that, in short, creates a new function. This function has the same body, but its context is always bound to a certain object, regardless of the way we invoke it.
+- Use the `bind` method, available to all functions, to create a new function that’s always bound to the argument of the bind method. In all other aspects, the bound function behaves as the original function.
+
+**Summary**
+- When invoking a function, in addition to the parameters explicitly stated in the function definition, function invocations are passed in two implicit parameters: `arguments` and `this`:
+1. The `arguments` parameter is a collection of arguments passed to the function. It has a `length` property that indicates how many arguments were passed in, and it enables us to access the values of arguments that don’t have matching parameters. In nonstrict mode, the arguments object aliases the function parameters (changing the argument changes the value of the parameter, and vice versa). This can be avoided by using strict mode.
+2. The `this` parameter represents the function context, an object to which the function invocation is associated. How `this` is determined can depend on the way a function is defined as well as on how it’s invoked.
+
+
 ## Resource
 Secrets of the JavaScript Ninja, Second Edition by John Resig, Bear Bibeault, and Josip Maras
 Published by Manning Publications, 2016
