@@ -75,6 +75,76 @@ There are two ways to register events:
 1. **Page building—** HTML code is processed to create the DOM, and global JavaScript code is executed when script nodes are encountered. During this execution, the JavaScript code can modify the current DOM to any degree and can even register event handlers—functions that are executed when a particular event occurs (for example, a mouse click or a keyboard press). Registering event handlers is easy: Use the built-in addEventListener method.
 2. **Event handling—** Various events are processed one at a time, in the order in which they were generated. The event-handling phase relies heavily on the event queue, in which all events are stored in the order in which they occurred. The event loop always checks the top of the queue for events, and if an event is found, the matching event-handler function is invoked.
 
+## Chapter 3. First-class functions for the novice: definitions and arguments
+- Functions in JavaScript possess all the capabilities of objects and are thus treated like any other object in the language.
+- Functions are objects, just with an additional, special capability of being invokable: Functions can be called or invoked in order to perform an action.
+- This means that we can pass a function as an argument to another function that might, at a later point in application execution, call the passed-in function. This is an example of a more general concept known as a **callback function**.
+- One of the most important features of JavaScript is the ability to create functions in the code anywhere an expression can appear. In addition to making the code more compact and easy to understand (by putting function definitions near where they’re used), this feature can also eliminate the need to pollute the global namespace with unnecessary names when a function isn’t going to be referenced from multiple places within the code.
+
+**Sorting with a comparator**
+There’s no need to think about the low-level details of a sorting algorithm (or even which sorting algorithm to choose). We provide a callback that the JavaScript engine will call every time it needs to compare two items.
+```javascript
+var values = [0, 3, 2, 5, 7, 4, 8, 1];
+
+values.sort(function(value1, value2){
+  return value1 - value2;
+});
+```
+**Fun with functions as objects**
+1. *Storing functions in a collection*: allows us to easily manage related functions—for example, callbacks that have to be invoked when something of interest occurs.
+2. *Memoization* allows the function to remember previously computed values, thereby improving the performance of subsequent invocations. Any sort of caching will certainly sacrifice memory in favor of performance.
+
+**Defining Functions**
+The way in which a function is defined significantly influences when the function is available to be invoked and how it behaves, as well as on which object the function can be invoked.
+- Function declarations and function expressions:
+```javascript
+function myFun(){ return 1;}
+```
+- Arrow functions (often called lambda functions)
+```javascript
+myArg => myArg*2
+```
+- Function constructors
+```javascript
+new Function('a', 'b', 'return a + b')
+```
+- Generator functions
+```javascript
+function* myGen(){ yield 1; }
+```
+
+- Function declarations and function expressions are the two most common types of functions:
+1. Function declarations must have a name, and must be placed as separate statements in our code.
+2. Function expressions don’t have to be named, but do have to be a part of another code statement.
+
+**Arrow Function**
+- The arrow function definition starts with an optional comma-separated list of parameter names.
+- If there are no parameters, or more than one parameter, this list must be enclosed within parentheses.
+- If we have only a single parameter, the parentheses are optional.
+- This list of parameters is followed by a mandatory fat-arrow operator, which tells us and the JavaScript engine that we’re dealing with an arrow function.
+
+**Arguments and Function Parameters**
+- A *parameter* is a variable that we list as part of a function definition.
+- An *argument* is a value that we pass to the function when we invoke it.
+
+**Rest parameters**
+- By prefixing the last-named argument of a function with an ellipsis (...), we turn it into an array called the *rest parameters*, which contains the remaining passed-in arguments.
+
+**Default parameters**
+- To create a default parameter, we assign a value to a function parameter.
+- We can assign any values to default parameters: simple, primitive values such as numbers or strings, but also complex types such as objects, arrays, and even functions.
+- Moderate use of default parameters—as a means of avoiding null values, or as relatively simple flags that configure the behaviors of our functions—can lead to much simpler and more elegant code.
+
+**Summary**
+- Writing sophisticated code hinges upon learning JavaScript as a functional language.
+- Functions are first-class objects that are treated just like any other objects within JavaScript. Similar to any other object type, they can be
+1. Created via literals
+2. Assigned to variables or properties
+3. Passed as parameters
+4. Returned as function results
+5. Assigned properties and methods
+- Callback functions are functions that other code will later “call back,” and are often used, especially with event handling.
+
 ## Resource
 Secrets of the JavaScript Ninja, Second Edition by John Resig, Bear Bibeault, and Josip Maras
 Published by Manning Publications, 2016
