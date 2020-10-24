@@ -200,6 +200,45 @@ We can invoke a function in four ways:
 1. The `arguments` parameter is a collection of arguments passed to the function. It has a `length` property that indicates how many arguments were passed in, and it enables us to access the values of arguments that don’t have matching parameters. In nonstrict mode, the arguments object aliases the function parameters (changing the argument changes the value of the parameter, and vice versa). This can be avoided by using strict mode.
 2. The `this` parameter represents the function context, an object to which the function invocation is associated. How `this` is determined can depend on the way a function is defined as well as on how it’s invoked.
 
+## Chapter 5. Functions for the master: closures and scopes
+- *closures* - a mechanism that allows a function to access all variables that are in scope when the function itself is created.
+- closures can help us mimic private variables
+- There are two main types of JavaScript code:
+1. global code, placed outside all functions
+2. function code, contained in functions.
+- When our code is being executed by the JavaScript engine, each statement is executed in a certain execution context.
+- There’s only one global execution context, created when our JavaScript program starts executing, whereas a new function execution context is created on each function invocation.
+- *Function context* is the object on which our function is invoked, which can be accessed through the `this` keyword. Function context is different from function execution context.
+- Even though the *execution context stack* is an internal JavaScript concept, you can explore it in any JavaScript debugger, where it’s referred to as a *call stack*
+- A *lexical environment* is an internal JavaScript engine construct used to keep track of the mapping from identifiers to specific variables. People often colloquially refer to them as scopes.
+- Each execution context has a lexical environment associated with it that contains the mapping for all identifiers defined directly in that context
+- Whenever a function is created, a reference to the lexical environment in which the function was created is stored in an internal (meaning that you can’t access or manipulate it directly) property named `[[Environment]]`
+
+**Understanding Types of JavaScript Variables**
+- In JavaScript, we can use three keywords for defining variables: var, let, and const. They differ in two aspects: mutability and their relationship toward the lexical environment.
+- All variables defined with `const` are immutable, meaning that their value can be set only once.
+- Variables defined with keywords `var` and `let` are typical run-of-the-mill variables, whose value we can change as many times as necessary.
+- A value of a `const` variable can be set only on initialization and that we can’t assign a completely new value later. We can still modify the existing value; we just can’t completely override it.
+- When we use the `var` keyword, the variable is defined in the closest function or global lexical environment. (Note that blocks are ignored!)
+- We can use `let` and `const` to define block-scoped, function-scoped, and global-scoped variables.
+- `let` and `const` define variables in the closest lexical environment (which can be a block environment, a loop environment, a function environment, or even the global environment).
+- Variables and function declarations are technically not “moved” anywhere. They’re visited and registered in lexical environments before any code is executed. Although *hoisting*, as it’s most often defined, is enough to provide a basic understanding of how JavaScript scoping works.
+
+**Summary**
+- Closures allow a function to access all variables that are in scope when the function itself was defined. They create a “safety bubble” of the function and the variables that are in scope at the point of the function’s definition. This way, the function has all it needs to execute, even if the scope in which the function was created is long gone.
+- We can use function closures for these advanced uses:
+1. Mimic private object variables, by closing over constructor variables through method closures
+2. Deal with callbacks, in a way that significantly simplifies our code
+- JavaScript engines track function execution through an execution context stack (or a call stack). Every time a function is called, a new function execution context is created and placed on the stack. When a function is done executing, the matching execution context is popped from the stack.
+- JavaScript engines track identifiers with lexical environments (or colloquially, scopes).
+- In JavaScript, we can define globally-scoped, function-scoped, and even-block scoped variables.
+- To define variables, we use `var`, `let`, and `const` keywords:
+1. The `var` keyword defines a variable in the closest function or global scope (while ignoring blocks).
+2. `let` and `const` keywords define a variable in the closest scope (including blocks), allowing us to create block-scoped variables, something that wasn’t possible in pre-ES6 JavaScript.
+3. `const` allows us to define “variables” whose value can be assigned only once.
+- Closures are merely a side effect of JavaScript scoping rules. A function can be called even when the scope in which it was created is long gone.
+
+
 
 ## Resource
 Secrets of the JavaScript Ninja, Second Edition by John Resig, Bear Bibeault, and Josip Maras
