@@ -72,7 +72,7 @@ There are two ways to register events:
 - The HTML code received by the browser is used as a blueprint for creating the DOM, an internal representation of the structure of a client-side web application.
 - We use JavaScript code to dynamically modify the DOM to bring dynamic behavior to web applications.
 - The execution of client-side web applications is performed in two phases:
-1. **Page building—** HTML code is processed to create the DOM, and global JavaScript code is executed when script nodes are encountered. During this execution, the JavaScript code can modify the current DOM to any degree and can even register event handlers—functions that are executed when a particular event occurs (for example, a mouse click or a keyboard press). Registering event handlers is easy: Use the built-in addEventListener method.
+1. **Page building—** HTML code is processed to create the DOM, and global JavaScript code is executed when script nodes are encountered. During this execution, the JavaScript code can modify the current DOM to any degree and can even register event handlers—functions that are executed when a particular event occurs (for example, a mouse click or a keyboard press). Registering event handlers is easy: Use the built-in `addEventListener` method.
 2. **Event handling—** Various events are processed one at a time, in the order in which they were generated. The event-handling phase relies heavily on the event queue, in which all events are stored in the order in which they occurred. The event loop always checks the top of the queue for events, and if an event is found, the matching event-handler function is invoked.
 
 ## Chapter 3. First-class functions for the novice: definitions and arguments
@@ -159,7 +159,7 @@ We can invoke a function in four ways:
 1. As a function—skulk(), in which the function is invoked in a straightforward manner
 2. As a method—ninja.skulk(), which ties the invocation to an object, enabling object-oriented programming
 3. As a constructor—new Ninja(), in which a new object is brought into being
-4. Via the function’s apply or call methods—skulk.call(ninja)or skulk.apply(ninja)
+4. Via the function’s apply or call methods—skulk.call(ninja) or skulk.apply(ninja)
 
 **Invocation as a function**
 - The function context (the value of the `this` keyword) can be two things:
@@ -189,7 +189,7 @@ We can invoke a function in four ways:
 - To facilitate a more functional style, all array objects have access to a `forEach` function that invokes a callback on each element within an array. This is often more succinct, and this style is preferred over the traditional `for` statement by those familiar with functional programming.
 
 **Using arrow functions to get around function contexts**
-- Arrow functions don’t have their own `this` value. Instead, they remember the value of the this parameter at the time of their definition.
+- Arrow functions don’t have their own `this` value. Instead, they remember the value of the `this` parameter at the time of their *definition*.
 
 **Using the bind method**
 - Every function has access to the `bind` method that, in short, creates a new function. This function has the same body, but its context is always bound to a certain object, regardless of the way we invoke it.
@@ -238,6 +238,44 @@ We can invoke a function in four ways:
 3. `const` allows us to define “variables” whose value can be assigned only once.
 - Closures are merely a side effect of JavaScript scoping rules. A function can be called even when the scope in which it was created is long gone.
 
+## Chapter 6. Functions for the future: generators and promises
+- *Generators* are a special type of function. Whereas a standard function produces at most a single value while running its code from start to finish
+- Generators produce multiple values, on a per request basis, while suspending their execution between these requests
+- A *promise* is a placeholder for a value that we don’t have yet but will at some later point. They’re especially good for working with multiple asynchronous steps.
+- Creating a generator function is simple: We append an asterisk (*) after the `function` keyword. This enables us to use the new `yield` keyword within the body of the generator to produce individual values.
+- Making a call to a generator doesn’t mean that the body of the generator function will be executed. Instead, an iterator object         is created, an object through which we can communicate with the generator
+- The iterator is used to control the execution of the generator. One of the fundamental things that the iterator object exposes         is the `next` method, which we can use to control the generator by requesting a value from it.
+- The iterator, created by calling a generator, exposes a `next` method through which we can request a new value from the generator. The `next` method returns an object that carries the value produced by the generator, as well as the information stored in the `done` property that tells us whether the generator has additional values to produce.
+- By using the `yield*` operator on an iterator, we yield to another generator
+- The layout of a web page is based on the DOM, a tree-like structure of HTML nodes, in which every node, except the root one, has exactly one parent, and can have zero or more children.
+- We can achieve two-way communication with a generator. We use `yield` to return data from a generator, and the iterator’s `next()` method to pass data back to the generator.
+- The `next` method supplies the value to the waiting `yield` expression, so if there’s no `yield` expression waiting, there’s nothing to supply the value to. For this reason, we can’t supply values over the first call to the `next` method. But remember, if you need to supply an initial value to the generator, you can do so when calling the generator itself
+- Calling a generator doesn’t execute it. Instead, it creates a new iterator that we can use to request values from the generator. After a generator produces (or yields) a value, it suspends its execution and waits for the next request. So in a way, a generator works almost like a small program, a state machine that moves between states.
+- Generators have to be able to resume their execution. Because the execution of all functions is handled by execution contexts, the iterator keeps a reference to its execution context, so that it’s alive for as long as the iterator needs it.
+- Standard functions can only be called anew, and each call creates a *new* execution context. In contrast, the execution context of a generator can be temporarily suspended and resumed at will.
+- A *promise* is a placeholder for a value that we don’t have now but will have later; it’s a guarantee that we’ll eventually know the result of an asynchronous computation.
+- To create a promise, we use the built-in Promise constructor, to which we pass a function. This function, called an *executor* function, has two parameters: `resolve` and `reject`. The executor is called *immediately* when constructing the Promise object with two built-in functions as arguments: `resolve`, which we manually call if we want the promise to resolve successfully, and `reject`, which we call if an error occurs.
+- We use the promise by calling the built-in `then` method on the Promise object, a method to which we pass two callback functions: a success callback and a failure callback. The former is called if the promise is resolved successfully (if the resolve function is called on the promise), and the latter is called if there’s a problem (either an unhandled exception occurs or the reject function is called on a promise).
+- Problems with callbacks:
+  1. Difficult error handling
+  2. Performing sequences of steps is tricky
+  3. Performing a number of steps in parallel is tricky
+- States of a promise
+  - A promise starts in the *pending* state, in which we know nothing about our promised value. That’s why a promise in the pending state is also called an `unresolved` promise.
+  - If the promise’s `resolve` function is called, the promise moves into the *fulfilled* state, in which we’ve successfully obtained the promised value.
+  - If the promise’s `reject` function is called, or if an unhandled exception occurs during promise handling, the promise moves into the *rejected* state
+  - We say that a promise is *resolved* (either successfully or not).
+- There are two ways of rejecting a promise: *explicitly*, by calling the passed-in `reject` method in the executor function of a promise, and *implicitly*, if during the handling of a promise, an unhandled exception occurs.
+-  We can chain in the `catch` method after the `then` method, to also provide an error callback that will be invoked when a promise gets rejected.
+
+**Summary**
+- Generators are functions that generate sequences of values—not all at once, but on a per request basis.
+- Unlike standard functions, generators can suspend and resume their execution. After a generator has generated a value, it suspends its execution without blocking the main thread and waits for the next request.
+- A generator is declared by putting an asterisk (`*`) after the function keyword. Within the body of the generator, we can use the new `yield` keyword that yields a value and suspends the execution of the generator. If we want to yield to another generator, we use the `yield*` operator.
+- Calling a generator creates an iterator object through which we control the execution of the generator. We request new values from the generator by using the iterator’s `next` method, and we can even throw exceptions into the generator by calling the iterator’s `throw` method. In addition, the `next` method can be used to send in values to the generator.
+- A promise is a placeholder for the results of a computation; it’s a guarantee that eventually we’ll know the result of the computation, most often an asynchronous computation. A promise can either succeed or fail, and after it has done so, there will be no more changes.
+- Promises significantly simplify our dealings with asynchronous tasks. We can easily work with sequences of interdependent asynchronous steps by using the `then` method to chain promises. Parallel handling of multiple asynchronous steps is also greatly simplified; we use the `Promise.all` method.
+- We can combine generators and promises to deal with asynchronous tasks with the simplicity of synchronous code
 
 
 ## Resource
