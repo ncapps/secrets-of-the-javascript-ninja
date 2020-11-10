@@ -277,6 +277,48 @@ We can invoke a function in four ways:
 - Promises significantly simplify our dealings with asynchronous tasks. We can easily work with sequences of interdependent asynchronous steps by using the `then` method to chain promises. Parallel handling of multiple asynchronous steps is also greatly simplified; we use the `Promise.all` method.
 - We can combine generators and promises to deal with asynchronous tasks with the simplicity of synchronous code
 
+## Chapter 7. Object orientation with prototypes
+- Every object can have a reference to its *prototype*, an object to which the search for a particular property can be delegated to, if the object itself doesn’t have that property.
+- Every object can have a prototype, and an object’s prototype can also have a prototype, and so on, forming a *prototype chain*.
+- The reference between an object and the function’s prototype is established at the time of object instantiation
+- By using the `constructor` property, we can access the function that was used to create the object. This information can be used as a form of type checking.
+- *Inheritance* is a form of reuse in which new objects have access to properties of existing objects. This helps us avoid the need to repeat code and data across our code base.
+- When we perform an `instanceof` operation, we can determine whether the function inherits the functionality of any object in its prototype chain.
+- Even though ES6 has introduced the `class` keyword, we’re still dealing with prototypes; classes are syntactic sugar designed to make our lives a bit easier when mimicking classes in JavaScript. These are functionally equivalent
+```javascript
+// ES5
+function Ninja(name) {
+  this.name = name;
+}
+Ninja.prototype.swingSword = function() {
+  return true;
+};
+
+// ES6
+class Ninja {
+  constructor(name){
+    this.name = name;
+  }
+
+  swingSword(){
+    return true;
+  }
+}
+```
+- We define classes and specify their relationship by using the `extends` keyword
+
+**Summary**
+- JavaScript objects are simple collections of named properties with values.
+- JavaScript uses prototypes.
+- Every object can have a reference to a *prototype*, an object to which we delegate the search for a particular property, if the object itself doesn’t have the searched-for property. An object’s prototype can have its own prototype, and so on, forming a prototype chain.
+- We can define the prototype of an object by using the `Object.setPrototypeOf` method.
+- Prototypes are closely linked to constructor functions. Every function has a `prototype` property that’s set as the prototype of objects that it instantiates.
+- A function’s prototype object has a `constructor` property pointing back to the function itself. This property is accessible to all objects instantiated with that function and, with certain limitations, can be used to find out whether an object was created by a particular function.
+- In JavaScript, almost everything can be changed at runtime, including an object’s prototypes and a function’s prototypes
+- If we want the instances created by a Ninja constructor function to “inherit” (more accurately, have access to) properties accessible to instances created by the Person constructor function, set the prototype of the Ninja constructor to a new instance of the Person class.
+- In JavaScript, properties have attributes (configurable, enumerable, writable). These properties can be defined by using the built-in `Object.defineProperty` method.
+- JavaScript ES6 adds support for a `class` keyword that enables us to more easily mimic classes. Behind the scenes, prototypes are still in play
+- The `extends` keyword enables elegant inheritance
 
 ## Resource
 Secrets of the JavaScript Ninja, Second Edition by John Resig, Bear Bibeault, and Josip Maras
