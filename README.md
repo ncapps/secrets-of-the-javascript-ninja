@@ -320,6 +320,27 @@ class Ninja {
 - JavaScript ES6 adds support for a `class` keyword that enables us to more easily mimic classes. Behind the scenes, prototypes are still in play
 - The `extends` keyword enables elegant inheritance
 
+## Chapter 8. Controlling access to objects
+- getter and setter methods can be defined in two ways:
+  1. By specifying them within object literals or within ES6 class definitions
+  2. By using the built-in `Object.defineProperty` method
+- native getters and setters allow us to specify properties that are accessed as standard properties, but that are methods whose execution is triggered immediately when the property is accessed
+- JavaScript doesn’t have private object properties. Instead, we can mimic them through closures, by defining variables and specifying object methods that will close over those variables
+- getters and setters can be used to define *computed properties*, properties whose value is calculated per request. Computed properties don’t store a value; they provide a get and/or a set method to retrieve and set other properties indirectly.
+- If a certain value depends only on the internal state of the object, it makes perfect sense to represent it as a data field, a property, instead of a function.
+
+**Summary**
+- We can monitor our objects with getters, setters, and proxies.
+- By using accessor methods (getters and setters), we can control access to object properties.
+  - Accessor properties can be defined by using the built-in `Object.define-Property` method or with a special get and set syntax as parts of object literals or ES6 classes.
+  - A `get` method is implicitly called whenever we try to read, whereas a `set` method is called whenever we assign a value to the matching object’s property
+  - Getter methods can be used to define computed properties, properties whose value is calculated on a per request basis, whereas setter methods can be used to achieve data validation and logging.
+- Proxies are an ES6 addition to JavaScript and are used to control other objects
+  - Proxies enable us to define custom actions that will be executed when an object is interacted with (for example, when a property is read or a function is called)
+  - All interactions have to go through the proxy, which has traps that are triggered when a specific action occurs.
+- Proxies aren’t fast, so be careful when using them in code that’s executed a lot. We recommend that you do performance testing.
+
+
 ## Resource
 Secrets of the JavaScript Ninja, Second Edition by John Resig, Bear Bibeault, and Josip Maras
 Published by Manning Publications, 2016
