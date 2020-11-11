@@ -340,6 +340,57 @@ class Ninja {
   - All interactions have to go through the proxy, which has traps that are triggered when a specific action occurs.
 - Proxies aren’t fast, so be careful when using them in code that’s executed a lot. We recommend that you do performance testing.
 
+## Chapter 9. Dealing with collections
+- There are two fundamental ways to create new arrays:
+  1. Using the built-in `Array` constructor
+  2. Using array literals []
+- Using array literals to create arrays is preferred over creating arrays with the Array constructor. The primary reason is simplicity: `[]` versus `new Array()`
+- each array has a `length` property that specifies the size of the array
+- we can use the built-in `push` method to append an item to the end of the array
+- We can also add new items to the beginning of the array by using the built in `unshift` method
+- Calling the built-in `pop` method removes an element from the end of the array
+- We can also remove an item from the beginning of the array by using the built-in `shift` method
+- `push` and `pop` are significantly faster operations than `shift` and `unshift`, and we recommend using them unless you have a good reason to do otherwise
+- `splice` takes two arguments: the index from which the splicing starts, and the number of elements to be removed. In addition, the `splice` method returns an array of items that have been removed
+- JavaScript arrays have a built-in `forEach` method
+- Creating new arrays based on the items in an existing array is called *mapping an array*. JavaScript has a `map` function that does exactly that.
+- The `every` method returns true only if the passed-in callback returns true for every item in the array
+- The `some` method calls the callback on each array item until an item is found for which the callback returns a true value
+- Use the built-in `find` method to find an array item that satisfies a certain condition
+- If we need to find multiple items satisfying a certain criterion, we can use the `filter` method, which creates a new array containing all the items that satisfy that criterion
+- Use the built-in `indexOf` method to find the index of a particular item
+- Use the `lastIndexOf` method to find the last index of a particular item
+- The `findIndex` method takes a callback and returns the index of the first item for which the callback returns `true`
+- The JavaScript engine implements the sorting algorithm. The only thing we have to provide is a callback that informs the sorting         algorithm about the relationship between two array items.
+- The `reduce` method works by taking the initial value and calling the callback function on each array item with the result of the previous callback invocation (or the initial value) and the current array item as arguments
+- **Don't use objects as maps**. For two reasons:
+  1. properties inherited through prototypes
+  2. support for string-only keys
+- Use the `Map` type
+- Use `for...of` loop to iterate over maps
+- Sets are collections of unique items
+- Use the built-in `Set` constructor to create a new set
+- Use `for...of` loop to iterate over sets
+- A *union* of two sets, A and B, creates a new set that contains all elements from both A and B
+- The *intersection* of two sets, A and B, creates a set that contains elements of A that are also in B
+- The *difference* of two sets, A and B, contains all elements that are in set A but are not in set B
+
+**Summary**
+- Arrays are a special type of object with a `length` property and `Array.prototype` as their prototype
+- We can create new arrays using the array literal notation (`[]`) or by calling the built-in `Array` constructor
+- We can modify the contents of an array using several methods accessible from array objects:
+  1. The built-in `push` and `pop` methods add items to and remove items from the end of the array.
+  2. The built-in `shift` and `unshift` methods add items to and remove items from the beginning of the array.
+  3. The built-in `splice` method can be used to remove items from and add items to arbitrary array positions.
+- All arrays have access to a number of useful methods:
+  1. The `map` method creates a new array with the results of calling a callback on every element.
+  2. The `every` and some methods determine whether all or some array items satisfy a certain criterion.
+  3. The `find` and `filter` methods find array items that satisfy a certain condition.
+  4. The `sort` method sorts an array.
+  5. The `reduce` method aggregates all items in an array into a single value.
+- You can reuse the built-in array methods when implementing your own objects by explicitly setting the method call context with the `call` or `apply` method.
+- Maps and dictionaries are objects that contain mappings between a key and a value
+- Objects in JavaScript are lousy maps because you can only use string values as keys and because there’s always the risk of            accessing prototype properties. Instead, use the new built-in `Map` collection
 
 ## Resource
 Secrets of the JavaScript Ninja, Second Edition by John Resig, Bear Bibeault, and Josip Maras
