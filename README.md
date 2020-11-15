@@ -392,6 +392,44 @@ class Ninja {
 - Maps and dictionaries are objects that contain mappings between a key and a value
 - Objects in JavaScript are lousy maps because you can only use string values as keys and because there’s always the risk of            accessing prototype properties. Instead, use the new built-in `Map` collection
 
+## Chapter 10. Wrangling regular expressions
+- A regular expression is a way to express a *pattern* for matching strings of text
+- Regular expressions require a lot of practice. Here are some resources:
+  - http://jsbin.com
+  - www.regexplanet.com/advanced/javascript/index.html
+  - www.regex101.com/#javascript
+- In JavaScript, as with most other object types, we have two ways to create a regular expression:
+  1. Via a regular expression literal
+  2. By constructing an instance of a RegExp object
+  ```javascript
+  // regex literal
+  const pattern = /test/;
+
+  // RegExp instance
+  const pattern = new RegExp("test");
+  ```
+  - The literal syntax is preferred when the regex is known at development time, and the constructor approach is used when the regex is constructed at runtime by building it up dynamically in a string.
+- five flags can be associated with a regex:
+  1. `i`— Makes the regex case-insensitive, so /test/i matches not only test, but also Test, TEST, tEsT
+  2. `g`— Matches all instances of the pattern, as opposed to the default of local, which matches only the first occurrence
+  3. `m`— Allows matches across multiple lines, as might be obtained from the value of a textarea element
+  4. `y`— Enables sticky matching. A regular expression performs sticky matching in the target string by attempting to match from the last match position
+  5. `u`— Enables the use of Unicode point escapes (\u{...})
+- Predefined character clasess help simplify our regex patterns
+- Preconstructing and precompiling regular expressions so that they can be reused (executed) time and time again is a recommended technique that provides performance gains
+- The `match` method of a regular expression returns an array of captured values if a match is found, or `null` if no match is found. The array returned by `match` includes the entire match in the first index, and then each subsequent capture following.
+
+**Summary**
+- We can create regular expressions with regular expression literals (`/test/`) and with the RegExp constructor (`new RegExp("test")`). Literals are preferred when the regex is known at development time, and the constructor when the regex is constructed at runtime.
+- Use `[]` (as in `[abc]`) to specify a set of characters that we wish to match.
+- Use `^` to signify that the pattern must appear at the beginning of a string and `$` to signify that the pattern must appear at the end of a string.
+- Use `?` to specify that a term is optional, `+` that a term should appear one or many times, and `*` to specify that a term appears zero, one, or many times.
+- Use `.` to match any character.
+- We can use backslash (`\`) to escape special regex characters (such as . [ $ ^).
+- Use parentheses `()` to group multiple terms together, and pipe (`|`) to specify alternation
+- Portions of a string that are successfully matched against terms can be back referenced with a backslash followed by the number of the capture (`\1`, `\2`, and so on).
+- Every string has access to the `match` function, which takes in a regular expression and returns an array containing the entire matched string along with any matched captures. We can also use the `replace` function, which causes a replacement on pattern matches rather than on a fixed string.
+
 ## Resource
 Secrets of the JavaScript Ninja, Second Edition by John Resig, Bear Bibeault, and Josip Maras
 Published by Manning Publications, 2016
