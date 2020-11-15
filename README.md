@@ -430,6 +430,47 @@ class Ninja {
 - Portions of a string that are successfully matched against terms can be back referenced with a backslash followed by the number of the capture (`\1`, `\2`, and so on).
 - Every string has access to the `match` function, which takes in a regular expression and returns an array containing the entire matched string along with any matched captures. We can also use the `replace` function, which causes a replacement on pattern matches rather than on a fixed string.
 
+## Chapter 11. Code modularization techniques
+**ES6 Module Syntax**
+```javascript
+// Export a named variable.
+export const ninja = "Yoshi";
+// Export a named function.
+export function compare(){}
+// Export a named class.
+export class Ninja{}
+
+// Export the default class export.
+export default class Ninja{}
+// Export the default function export.
+export default function Ninja(){}
+
+const ninja = "Yoshi";
+function compare(){};
+// Export existing variables.
+export {ninja, compare};
+// Export a variable through a new name.
+export {ninja as samurai, compare};
+
+// Import a default export.
+import Ninja from "Ninja.js";
+// Import named exports.
+import {ninja, Ninja} from "Ninja.js";
+
+// Import all named exports from a module.
+import * as Ninja from "Ninja.js";
+
+// Import a named export through a new name.
+import {ninja as iNinja} from "Ninja.js";
+```
+- One way of improving the structure and organization of our programs is to break them into smaller, relatively loosely coupled segments or modules.
+- Modules are larger units of organizing code than objects and functions, and they allow us to divide programs into clusters that belong together.
+- In general, modules foster understandability, ease maintenance, and improve the reusability of code.
+- Pre-ES6 JavaScript has no built-in modules, and developers had to be creative with existing language features to enable code modularization
+- ES6 modules are designed to take into account the features of AMD and CommonJS. These modules have a simple syntax influenced            by CommonJS, and provide asynchronous module loading as in AMD.
+- ES6 modules are file based, one module per file.
+
+
 ## Resource
 Secrets of the JavaScript Ninja, Second Edition by John Resig, Bear Bibeault, and Josip Maras
 Published by Manning Publications, 2016
